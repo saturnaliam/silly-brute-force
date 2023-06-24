@@ -1,9 +1,10 @@
 import { parse } from "https://deno.land/std@0.192.0/flags/mod.ts";
 
 const generate = (loops: number) => {
+  console.time("elapsed")
   loops = loops - 1;
 
-  const sub_gen = (loops: number) => {
+  const sub_gen = (loops: number): string[] => {
     const symbols =
       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=";
     const gen = [];
@@ -15,7 +16,7 @@ const generate = (loops: number) => {
         gen.pop();
         for (let x = 0; x < sub_gens.length; x++) {
           gen.push(symbols[i]);
-          gen[gen.length - 1] = gen[gen.length - 1].concat(sub_gens[x]);
+          gen[gen.length - 1] += sub_gens[x];
         }
       }
     }
@@ -30,6 +31,7 @@ const generate = (loops: number) => {
   }
 
   console.log(print_message);
+  console.timeEnd("elapsed")
 };
 
 if (parse(Deno.args)["l"]) generate(parse(Deno.args)["l"]);
